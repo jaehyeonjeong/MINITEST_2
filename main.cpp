@@ -215,7 +215,7 @@ int main()
 				//sm.FindCPrice(cm);
 				break;
 			case 4:
-				sm.Shopping_Remove_All();
+				sm.Shopping_Remove_All(cm);
 				sm.Shopping_Display();
 				//sm.FindCPrice(cm);
 				break;
