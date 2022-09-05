@@ -38,12 +38,15 @@ public:
 	vector<string> parseCSV(istream& file, char delimiter);
 	vector<Shopping*> shoppingList;
 private:
+	//구매정보 리스트 넘버 PK와 구매 정보 카운트 저장 변수
 	int S_Count = 0;
 	int Snumber = 0;
-	string CL_PK;
-	string PR_PK;
+
+	//구매정보 리스트의 변경함수 내부 변경 데이터
 	int date;
 	int quan;
+
+	
 	int Allprice;
 };
 

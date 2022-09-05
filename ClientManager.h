@@ -27,6 +27,7 @@ public:
 private:
 	int C_Count = 0;
 	
+	//고객 정보 변경하는 함수에서 쓰이는 변수
 	string CM_Word;
 	string CM_Name;
 	string CM_Phone;
