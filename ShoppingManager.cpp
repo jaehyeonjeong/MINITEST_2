@@ -1,5 +1,6 @@
 #include "ShoppingManager.h"
 #include <Windows.h>
+#include <conio.h>
 
 
 //구매 정보 데이터 추가 함수
@@ -86,9 +87,10 @@ void ShoppingManager::sort()
 //구매 정보 리스트 공개 함수
 void ShoppingManager::Shopping_Display(ClientManager& _cm, ProductManager& _pm)
 {
-	int num = 0, find;
+	int num = 0;
 	string PKCL, PKPR;
 	int sm_date, flash = 1;
+	char find_c;
 
 	cout << "ShoppingCount : " << S_Count << endl;
 	cout << "++++++++++++++++++++++++++++++구매 정보 리스트++++++++++++++++++++++++++++++" << endl;
@@ -124,17 +126,20 @@ void ShoppingManager::Shopping_Display(ClientManager& _cm, ProductManager& _pm)
 		{
 			//ClientID의 정보의 종류를 물어보는 case문
 		case 1:
-		back_cl:;
 			cout << "\nClientID의 정보중 어떤 정보를 원하십니까?" << endl;
-			cout << "1. ClientID 정보, 2. 해당 ClientID 구매 목록 : "; cin >> find;
-			if (!cin)
+			cout << "1. ClientID 정보, 2. 해당 ClientID 구매 목록 : "; cin >> find_c;
+			do
 			{
-				cout << "\n입력하신 숫자가 정수형이 아닙니다!!" << endl;
-				cin.ignore(INT_MAX, '\n');
-				goto back_cl;
-			}
+				find_c = _getch();
+				if (find_c >= '1' && find_c <= '2')
+				{
+					cout << "정수형 숫자를 입력해주시기 바랍니다!!!" << endl;
+					cin.ignore(INT_MAX, '\n');
+					break;
+				}
+			} while (true);
 			//ClientID 정보 공개 함수
-			if (find == 1)
+			if (find_c == '1')
 			{
 				cout << "\nClientID 입력 : "; cin >> pk_cl;
 				cout << "\n해당 ClientID(" << pk_cl << ")의 정보는 :";
@@ -151,7 +156,7 @@ void ShoppingManager::Shopping_Display(ClientManager& _cm, ProductManager& _pm)
 				}
 			}
 			//해당 ClientID 구매 정보 리스트
-			else if (find == 2)
+			else if (find_c == '2')
 			{
 				cout << "\nClientID 입력 : "; cin >> pk_cl;
 				PKCL = pk_cl;
@@ -195,18 +200,20 @@ void ShoppingManager::Shopping_Display(ClientManager& _cm, ProductManager& _pm)
 
 			//ProdcutID의 정보의 종류를 물어보는 case문
 		case 2:
-		back_pr:;
 			cout << "\nProductID의 정보중 어떤 정보를 원하십니까?" << endl;
-			cout << "1. ProductID 정보, 2. 해당 ProductID 구매 목록 : "; cin >> find;
-			if (!cin)
+			cout << "1. ProductID 정보, 2. 해당 ProductID 구매 목록 : "; cin >> find_c;
+			do
 			{
-				cout << "\n입력하신 숫자가 정수형이 아닙니다!!" << endl;
-				cin.ignore(INT_MAX, '\n');
-				goto back_pr;
-			}
-
+				find_c = _getch();
+				if (find_c >= '1' && find_c <= '2')
+				{
+					cout << "정수형 숫자를 입력해주시기 바랍니다!!!" << endl;
+					cin.ignore(INT_MAX, '\n');
+					break;
+				}
+			} while (true);
 			//해당 ProdcutID의 정보 검색
-			if (find == 1)
+			if (find_c == '1')
 			{
 				cout << "\nProductID 입력 :"; cin >> pk_pr;
 				cout << "\n해당 ProductID(" << pk_pr << ")의 정보는 :";
@@ -222,7 +229,7 @@ void ShoppingManager::Shopping_Display(ClientManager& _cm, ProductManager& _pm)
 			}
 
 			//해당 ProductID의 구매정보 리스트 나열
-			else if (find == 2)
+			else if (find_c == '2')
 			{
 				cout << "\nProductID 입력 : "; cin >> pk_pr;
 				PKPR = pk_pr;
