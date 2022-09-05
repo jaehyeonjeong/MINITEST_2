@@ -125,7 +125,7 @@ void ClientManager::Client_Load()
 			if (row.size()) {
 				//해당 고객이 사용한 금액 int 형으로 변환
 				int cprice = atoi(row[5].c_str());
-
+				//고객의 인원수 저장
 				int count = atoi(row[6].c_str());
 
 				//row[4]와 cprice에서 client생성자와 비교하여 파일에서 불러드림

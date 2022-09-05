@@ -4,9 +4,13 @@
 void ShoppingManager::Shopping_Input(ClientManager& C_ref, ProductManager& P_ref,
 	int _num, string _clpk, string _prpk, int _date, int _quantatiy)
 {
+	//고객 등급을 string변수로 내부에서 따로 저장하는 이유는 compare함수에 "VVIP"로 작성하면 const char*로 NULL문자까지 포함시켜 버린다.
 	string VVIP = "VVIP";
 	string VIP = "VIP";
 	string Normal = "Normal";
+
+
+
 	for (int i = 0; i < C_ref.getCCount(); i++)
 	{
 		if (C_ref.clientList.at(i)->getCWord().compare(_clpk) == 0) //클라이언트 PK와 입력한 클라이언트 PK값 비교 참이면 바디 계산
