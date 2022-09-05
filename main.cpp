@@ -5,7 +5,7 @@
 int main()
 {
 	//main 내에 스위치 변수 절대 지우면 안됨
-	int L_number = 0, S_number;
+	int L_number, S_number;
 
 	//client cin 정보
 	string c_word, c_name, c_phone, c_email;
@@ -20,10 +20,13 @@ int main()
 	ProductManager pm;
 	ShoppingManager sm;
 
+	textcolor(WHITE, BLACK);
+
 	//Client Product Shopping 텍스트 불러오기
 	cm.Client_Load();
 	pm.Product_Load();
 	sm.Shopping_Load();
+
 	cout << "안녕하십니까? Dentist Center 입니다." << endl;
 	while (true)
 	{
@@ -198,10 +201,10 @@ int main()
 				//sm.FindCPrice(cm);
 				break;
 			case 2:
-				sm.Shopping_Display(); cout << endl;
+				sm.Shopping_Display(cm, pm); cout << endl;
 				break;
 			case 3:
-				sm.Shopping_Display();
+				sm.Shopping_Display(cm, pm);
 			shopping_3:;
 				cout << "\n삭제할 구매 번호를 입력해주세요 : "; cin >> s_num;
 				if (!cin || s_num == 0)//정수형 인자 콘솔 입력부분 경계 검사
@@ -216,12 +219,12 @@ int main()
 				break;
 			case 4:
 				sm.Shopping_Remove_All(cm);
-				sm.Shopping_Display();
+				sm.Shopping_Display(cm, pm);
 				//sm.FindCPrice(cm);
 				break;
 			case 5:
 			shopping_4:;
-				sm.Shopping_Display();
+				sm.Shopping_Display(cm, pm);
 				cout << "\n변경할 구매 번호를 입력해주세요 : "; cin >> s_num;
 				if (!cin)//정수형 인자 콘솔 입력부분 경계 검사
 				{
@@ -241,6 +244,7 @@ int main()
 
 		//프로그램 종료 스위치	
 		case 4:
+			//프로그램 종료시 콘솔에서 실행했던 정보를 저장하는 유무를 정함.
 			char push;
 			cout << "\n저장후 프로그램을 종료하시겠습니까? (y/n) : "; cin >> push;
 			if (push == 'y' || push == 'Y')
@@ -251,8 +255,10 @@ int main()
 				cout << "프로그램 종료!!" << endl << endl;
 				exit(1);
 				break;
+				//콘솔에 저장되어 있는 데이터 및 정보 저장
 			}
 			cout << "프로그램 종료!!" << endl << endl;
+			//저장하지 않고 초기화
 			exit(1);
 			break;
 

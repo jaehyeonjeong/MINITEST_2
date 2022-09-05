@@ -10,12 +10,18 @@
 #include <fstream>
 #include <iomanip>
 
+#define BLACK 0
+#define WHITE 15
+#define LIGHTRED 12
+
+void textcolor(int foreground, int background);
+
 class ShoppingManager
 {
 public:
 	void Shopping_Input(ClientManager& C_ref, ProductManager& P_ref,
 		int num, string _clpk, string _prpk, int _date, int _quantatiy);
-	void Shopping_Display();
+	void Shopping_Display(ClientManager& _cm, ProductManager& _pm);
 	int getSNumber() { return Snumber; }
 	void setSNumber(int _Snumber) { Snumber = _Snumber; }
 	void sort();
@@ -43,8 +49,12 @@ private:
 	int Snumber = 0;
 
 	//구매정보 리스트의 변경함수 내부 변경 데이터
-	int date;
+	int date; //또한 날짜를 입력받아 해당하는 날짜에 데이터를 찾음
 	int quan;
+
+	//shopping list의 pk의 값을 찾기위한 데이터
+	string pk_cl;
+	string pk_pr;
 
 	
 	int Allprice;

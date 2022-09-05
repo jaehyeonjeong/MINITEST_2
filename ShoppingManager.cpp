@@ -1,4 +1,6 @@
 #include "ShoppingManager.h"
+#include <Windows.h>
+
 
 //구매 정보 데이터 추가 함수
 void ShoppingManager::Shopping_Input(ClientManager& C_ref, ProductManager& P_ref,
@@ -82,8 +84,12 @@ void ShoppingManager::sort()
 }
 
 //구매 정보 리스트 공개 함수
-void ShoppingManager::Shopping_Display()
+void ShoppingManager::Shopping_Display(ClientManager& _cm, ProductManager& _pm)
 {
+	int num = 0, find;
+	string PKCL, PKPR;
+	int sm_date, flash = 1;
+
 	cout << "ShoppingCount : " << S_Count << endl;
 	cout << "++++++++++++++++++++++++++++++구매 정보 리스트++++++++++++++++++++++++++++++" << endl;
 	cout << "----------------------------------------------------------------------------" << endl;
@@ -98,6 +104,217 @@ void ShoppingManager::Shopping_Display()
 			cout << "----------------------------------------------------------------------------" << endl;
 		});
 	cout << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << endl << endl;
+
+
+	//구매리스트 조회후 client, product, 날짜별 정보 검색
+	while (num != 4)
+	{
+	back_search:;
+		cout << "\n구매 정보 리스트에서 검색할 키워드가 있으십니까?" << endl;
+		cout << "1. ClientID, 2. ProductID, 3. 날짜별 구매 정보, 4.종료 : "; cin >> num;
+
+		if (!cin)
+		{
+			cout << "\n정수형 숫자를 입력해주시기 바랍니다." << endl;
+			cin.clear();
+			cin.ignore(INT_MAX, '\n');
+			goto back_search;
+		}
+		switch (num)
+		{
+			//ClientID의 정보의 종류를 물어보는 case문
+		case 1:
+		back_cl:;
+			cout << "\nClientID의 정보중 어떤 정보를 원하십니까?" << endl;
+			cout << "1. ClientID 정보, 2. 해당 ClientID 구매 목록 : "; cin >> find;
+			if (!cin)
+			{
+				cout << "\n입력하신 숫자가 정수형이 아닙니다!!" << endl;
+				cin.ignore(INT_MAX, '\n');
+				goto back_cl;
+			}
+			//ClientID 정보 공개 함수
+			if (find == 1)
+			{
+				cout << "\nClientID 입력 : "; cin >> pk_cl;
+				cout << "\n해당 ClientID(" << pk_cl << ")의 정보는 :";
+				PKCL = pk_cl;
+				auto it = find_if(_cm.clientList.begin(), _cm.clientList.end(),
+					[=](Client* c) {return *c == PKCL; });
+				if (it != _cm.clientList.end())
+				{
+					Client* c = *it;
+					cout << "\n고객 성함 : " << c->getCName() << 
+						", \n고객 등급 : " << c->getCGrade() <<
+						", \n고객 전화번호 : " << c->getCPhone() << 
+						", \n고객 이메일 : " << c->getCEmail() << endl << endl;
+				}
+			}
+			//해당 ClientID 구매 정보 리스트
+			else if (find == 2)
+			{
+				cout << "\nClientID 입력 : "; cin >> pk_cl;
+				PKCL = pk_cl;
+				cout << endl;
+				auto it = find_if(_cm.clientList.begin(), _cm.clientList.end(),
+					[=](Client* c) {return *c == PKCL; });
+				if (it != _cm.clientList.end())
+				{
+					Client* c = *it;
+					cout << "+++++++++++++++++++++++" << pk_cl <<"의 구매 정보 리스트++++++++++++++++++++++++" << endl;
+					cout << "----------------------------------------------------------------------------" << endl;
+					cout << setw(5) << "번호" << " | " << setw(10) << "고객 ID" << " | " << setw(11) << "상품 ID" << " | " << setw(11) << "구매 날짜" << " | "
+						<< setw(5) << "수량" << " | " << setw(18) << "총 금액" << endl;
+					cout << "----------------------------------------------------------------------------" << endl;
+					for (int i = 0; i < S_Count; i++)
+					{
+						if (c->getCWord().compare(shoppingList.at(i)->getSPKClient()) == 0)
+						{
+							cout << setw(5) << shoppingList.at(i)->getSNumber() << " | " << setw(10);
+							textcolor(LIGHTRED, BLACK);
+							cout << shoppingList.at(i)->getSPKClient();
+							textcolor(WHITE, BLACK);
+							cout << " | " << setw(11) << shoppingList.at(i)->getSPKProduct() << " | " << setw(11) << shoppingList.at(i)->getSDate() << " | "
+								<< setw(5) << shoppingList.at(i)->getSDate() << " | " << setw(18) << shoppingList.at(i)->getSAllprice() << endl;
+						}
+						cout << "----------------------------------------------------------------------------" << endl;
+					}
+					cout << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << endl << endl;
+				}
+			}
+
+			//해당없는 정수형 숫자는 조회 질문으로 돌아감
+			else
+			{
+				cout << "\n조회 질문으로 돌아가겠습니다." << endl;
+				break;
+			}
+			break;
+			//ClientID의 정보의 종류를 물어보는 case문
+
+
+			//ProdcutID의 정보의 종류를 물어보는 case문
+		case 2:
+		back_pr:;
+			cout << "\nProductID의 정보중 어떤 정보를 원하십니까?" << endl;
+			cout << "1. ProductID 정보, 2. 해당 ProductID 구매 목록 : "; cin >> find;
+			if (!cin)
+			{
+				cout << "\n입력하신 숫자가 정수형이 아닙니다!!" << endl;
+				cin.ignore(INT_MAX, '\n');
+				goto back_pr;
+			}
+
+			//해당 ProdcutID의 정보 검색
+			if (find == 1)
+			{
+				cout << "\nProductID 입력 :"; cin >> pk_pr;
+				cout << "\n해당 ProductID(" << pk_pr << ")의 정보는 :";
+				PKPR = pk_pr;
+				auto it = find_if(_pm.productList.begin(), _pm.productList.end(),
+					[=](Product* p) {return *p == PKPR; });
+				if (it != _pm.productList.end())
+				{
+					Product* p = *it;
+					cout << "\n상품 이름 : " << p->getPName() << 
+						", \n상품 가격 : " << p->getPPrice() << endl << endl;
+				}
+			}
+
+			//해당 ProductID의 구매정보 리스트 나열
+			else if (find == 2)
+			{
+				cout << "\nProductID 입력 : "; cin >> pk_pr;
+				PKPR = pk_pr;
+				cout << endl;
+				auto it = find_if(_pm.productList.begin(), _pm.productList.end(),
+					[=](Product* p) {return *p == PKPR; });
+				if (it != _pm.productList.end())
+				{
+					Product* p = *it;
+					cout << "++++++++++++++++++++++++" << pk_pr << "의 구매 정보 리스트+++++++++++++++++++++++++" << endl;
+					cout << "----------------------------------------------------------------------------" << endl;
+					cout << setw(5) << "번호" << " | " << setw(10) << "고객 ID" << " | " << setw(11) << "상품 ID" << " | " << setw(11) << "구매 날짜" << " | "
+						<< setw(5) << "수량" << " | " << setw(18) << "총 금액" << endl;
+					cout << "----------------------------------------------------------------------------" << endl;
+					for (int i = 0; i < S_Count; i++)
+					{
+						if (p->getPId().compare(shoppingList.at(i)->getSPKProduct()) == 0)
+						{
+							cout << setw(5) << shoppingList.at(i)->getSNumber() << " | " << setw(10) << shoppingList.at(i)->getSPKClient() << " | ";
+							textcolor(LIGHTRED, BLACK);
+								cout << setw(11) << shoppingList.at(i)->getSPKProduct();
+								textcolor(WHITE, BLACK);
+								cout << " | " << setw(11) << shoppingList.at(i)->getSDate() << " | "
+								<< setw(5) << shoppingList.at(i)->getSDate() << " | " << setw(18) << shoppingList.at(i)->getSAllprice() << endl;
+						}
+						cout << "----------------------------------------------------------------------------" << endl;
+					}
+					cout << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << endl << endl;
+				}
+			}
+
+			else
+			{
+				cout << "조회 질문으로 돌아가겠습니다." << endl;
+				break;
+			}
+			break;
+			//ProdcutID의 정보의 종류를 물어보는 case문
+
+
+			//shopping list의 날짜별 구매정보 리스트 탐/검색
+		case 3:
+		back_date:;
+			cout << "\nShopping Date입력 : "; cin >> date;
+			if (!cin)
+			{
+				cout << "현재 입력한 정보가 정수형 데이터가 아닙니다." << endl;
+				cin.ignore(INT_MAX, '\n');
+				goto back_date;
+			}
+			sm_date = date;
+			cout << endl;
+			if (flash == 1)
+			{
+				auto it = find_if(shoppingList.begin(), shoppingList.end(), [=](Shopping* s) {return *s == sm_date; });
+				if (it != shoppingList.end())
+				{
+					Shopping* s = *it;
+					cout << "+++++++++++++++++++++++++++" << date << " 별 구매 리스트++++++++++++++++++++++++++++" << endl;
+					cout << "----------------------------------------------------------------------------" << endl;
+					cout << setw(5) << "번호" << " | " << setw(10) << "고객 ID" << " | " << setw(11) << "상품 ID" << " | " << setw(11) << "구매 날짜" << " | "
+						<< setw(5) << "수량" << " | " << setw(18) << "총 금액" << endl;
+					cout << "----------------------------------------------------------------------------" << endl;
+					for (int i = 0; i < S_Count; i++)
+					{
+						if (s->getSDate() == shoppingList.at(i)->getSDate())
+						{
+							cout << setw(5) << shoppingList.at(i)->getSNumber() << " | " << setw(10) << shoppingList.at(i)->getSPKClient() << " | "
+								<< setw(11) << shoppingList.at(i)->getSPKProduct() << " | ";
+							textcolor(LIGHTRED, BLACK);
+							cout << setw(11) << shoppingList.at(i)->getSDate();
+							textcolor(WHITE, BLACK);
+							cout << " | "  << setw(5) << shoppingList.at(i)->getSQuan();
+								cout << " | " << setw(18) << shoppingList.at(i)->getSAllprice() << endl;
+						}
+						cout << "----------------------------------------------------------------------------" << endl;
+					}
+					cout << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << endl << endl;
+				}
+			}
+			break;
+			//shopping list의 날짜별 구매정보 리스트 탐/검색
+
+
+		case 4:
+			cout << "검색 프로그램 종료" << endl;
+			break;
+		default:
+			cout << "해당하는 검색 키워드가 없습니다." << endl;
+			break;
+		}
+	}
 }
 
 //구매 정보 삭제 함수
@@ -312,4 +529,10 @@ void ShoppingManager::FindCPrice(ClientManager& _cm)
 			//cout << "Normal로 설정" << endl;
 		}
 	}
+}
+
+void textcolor(int foreground, int background)
+{
+	int color = foreground + background * 16;
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }

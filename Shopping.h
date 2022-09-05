@@ -24,6 +24,8 @@ public:
 	void setSQuan(int _quan);
 	int getSAllprice();
 	void setSAllprice(int _allprice) { S_Allprice = _allprice; }
+
+	bool operator==(int date)const;
 private:
 	int S_Number;
 	string PK_Client;

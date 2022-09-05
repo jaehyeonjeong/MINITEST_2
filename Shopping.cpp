@@ -54,3 +54,9 @@ int Shopping::getSAllprice()
 {
 	return S_Allprice;
 }
+
+bool Shopping::operator==(int date)const
+{
+	return(this->S_Date == date);
+}
+
