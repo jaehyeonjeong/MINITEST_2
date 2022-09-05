@@ -4,6 +4,9 @@
 void ShoppingManager::Shopping_Input(ClientManager& C_ref, ProductManager& P_ref,
 	int _num, string _clpk, string _prpk, int _date, int _quantatiy)
 {
+	string VVIP = "VVIP";
+	string VIP = "VIP";
+	string Normal = "Normal";
 	for (int i = 0; i < C_ref.getCCount(); i++)
 	{
 		if (C_ref.clientList.at(i)->getCWord().compare(_clpk) == 0) //클라이언트 PK와 입력한 클라이언트 PK값 비교 참이면 바디 계산
@@ -27,12 +30,36 @@ void ShoppingManager::Shopping_Input(ClientManager& C_ref, ProductManager& P_ref
 						{
 							Product* p = *it2;
 							cout << "ADD Prodcut Prime Key : " << p->getPId() << endl;
-							int price = P_ref.productList.at(j)->getPPrice() * _quantatiy;
-							shoppingList.push_back(new Shopping(_num,
-								_clpk, _prpk, _date, _quantatiy, price)); // 위의 PK값 일치가 충족 된다면 쇼핑 리스트에 데이터 추가
-							Snumber += 1;
-							S_Count += 1;
-							cout << "\n구매 정보 추가 완료" << endl;
+							double price;
+		
+							//등급별 가격 할인
+							if (C_ref.clientList.at(i)->getCGrade().compare(VVIP) == 0)
+							{
+								price = (P_ref.productList.at(j)->getPPrice() * _quantatiy) * 0.90; //VVIP면 10퍼센트 할인
+								shoppingList.push_back(new Shopping(_num,
+									_clpk, _prpk, _date, _quantatiy, price)); // 위의 PK값 일치가 충족 된다면 쇼핑 리스트에 데이터 추가
+								Snumber += 1;
+								S_Count += 1;
+								cout << "\n구매 정보 추가 완료" << endl;
+							}
+							if (C_ref.clientList.at(i)->getCGrade().compare(VIP) == 0)
+							{
+								price = (P_ref.productList.at(j)->getPPrice() * _quantatiy) * 0.95; //VIP면 5퍼센트 할인
+								shoppingList.push_back(new Shopping(_num,
+									_clpk, _prpk, _date, _quantatiy, price)); // 위의 PK값 일치가 충족 된다면 쇼핑 리스트에 데이터 추가
+								Snumber += 1;
+								S_Count += 1;
+								cout << "\n구매 정보 추가 완료" << endl;
+							}
+							if (C_ref.clientList.at(i)->getCGrade().compare(Normal) == 0)
+							{
+								price = P_ref.productList.at(j)->getPPrice() * _quantatiy; //Normal이면 아무것도 없음
+								shoppingList.push_back(new Shopping(_num,
+									_clpk, _prpk, _date, _quantatiy, price)); // 위의 PK값 일치가 충족 된다면 쇼핑 리스트에 데이터 추가
+								Snumber += 1;
+								S_Count += 1;
+								cout << "\n구매 정보 추가 완료" << endl;
+							}
 						}
 					}
 				}
@@ -92,13 +119,6 @@ void ShoppingManager::Shopping_Remove_All(ClientManager& _cm)
 	}
 	S_Count = 0;
 	Snumber = 0; //Shoppinglist count 초기화
-
-	//고객 관리 초기화
-	for(int i = 0; i < _cm.getCCount(); i++)
-	{
-		_cm.clientList.at(i)->setCGrade("Normal");
-		_cm.clientList.at(i)->setCPrice(0);
-	}
 	
 	cout << "\n구매 정보 전체 삭제 완료!" << endl;
 }
@@ -174,6 +194,7 @@ void ShoppingManager::Shopping_Load()
 {
 	ifstream file;
 	file.open("shoppinglist.txt");
+
 	if (!file.fail())
 	{
 		while (!file.eof())
