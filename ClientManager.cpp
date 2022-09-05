@@ -94,7 +94,7 @@ void ClientManager::Client_PK(string _word)
 void ClientManager::Client_Save()
 {
 	ofstream file;
-	file.open("clientlist.txt");
+	file.open("clientlist.csv");
 	if (!file.fail()) {
 		for (const auto& c : clientList) {
 			file << c->getCWord() << ',';
@@ -118,7 +118,7 @@ void ClientManager::Client_Load()
 {
 	//vector<Client*> vecList;
 	ifstream file; //input
-	file.open("clientlist.txt");
+	file.open("clientlist.csv");
 	if (!file.fail()) {
 		while (!file.eof()) {
 			vector<string> row = parseCSV(file, ',');

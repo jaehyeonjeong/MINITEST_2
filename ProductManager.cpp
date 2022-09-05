@@ -92,7 +92,7 @@ void ProductManager::Product_PK(string _id)
 void ProductManager::Product_Save()
 {
 	ofstream file;
-	file.open("prductlist.txt");
+	file.open("prductlist.csv");
 	if (!file.fail())
 	{
 		for (const auto& p : productList)
@@ -112,7 +112,7 @@ void ProductManager::Product_Save()
 void ProductManager::Product_Load()
 {
 	ifstream file;
-	file.open("prductlist.txt");
+	file.open("prductlist.csv");
 	if (!file.fail())
 	{
 		while (!file.eof())

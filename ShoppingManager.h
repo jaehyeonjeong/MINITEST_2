@@ -42,6 +42,7 @@ public:
 	//main 함수 에서는 sm.FindCPrice(cm) 으로 각 case마다 호출
 
 	vector<string> parseCSV(istream& file, char delimiter);
+private:
 	vector<Shopping*> shoppingList;
 private:
 	//구매정보 리스트 넘버 PK와 구매 정보 카운트 저장 변수

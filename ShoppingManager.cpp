@@ -393,7 +393,7 @@ void ShoppingManager::Shopping_Change(int _num, ProductManager& sh_pm)
 void ShoppingManager::Shopping_Save()
 {
 	ofstream file;
-	file.open("shoppinglist.txt");
+	file.open("shoppinglist.csv");
 	if (!file.fail())
 	{
 		for (const auto& s : shoppingList)
@@ -416,7 +416,7 @@ void ShoppingManager::Shopping_Save()
 void ShoppingManager::Shopping_Load()
 {
 	ifstream file;
-	file.open("shoppinglist.txt");
+	file.open("shoppinglist.csv");
 
 	if (!file.fail())
 	{
