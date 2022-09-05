@@ -204,9 +204,9 @@ int main()
 				sm.Shopping_Display();
 			shopping_3:;
 				cout << "\n삭제할 구매 번호를 입력해주세요 : "; cin >> s_num;
-				if (!cin)//정수형 인자 콘솔 입력부분 경계 검사
+				if (!cin || s_num == 0)//정수형 인자 콘솔 입력부분 경계 검사
 				{
-					cout << "\n번호에 정수형 숫자를 입력하지 않았습니다." << endl;
+					cout << "\n번호에 정수형 숫자를 입력하지 않았거나 0번째는 삭제할 수 없습니다." << endl;
 					cin.clear();
 					cin.ignore(INT_MAX, '\n');
 					goto shopping_3;

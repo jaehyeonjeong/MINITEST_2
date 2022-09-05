@@ -113,11 +113,13 @@ void ShoppingManager::Shopping_Remove(int _num)
 //구매 정보 전체 삭제 함수
 void ShoppingManager::Shopping_Remove_All(ClientManager& _cm)
 {
+	string EX = "EX";
 	while (!shoppingList.empty())
 	{
-		shoppingList.erase(shoppingList.begin(), shoppingList.end());
+		shoppingList.erase(shoppingList.begin() + 1, shoppingList.end());
+		if (shoppingList.at(0)) break;
 	}
-	S_Count = 0;
+	S_Count = 1;
 	Snumber = 0; //Shoppinglist count 초기화
 	
 	cout << "\n구매 정보 전체 삭제 완료!" << endl;
