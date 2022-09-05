@@ -25,7 +25,7 @@ int main()
 	pm.Product_Load();
 	sm.Shopping_Load();
 	cout << "안녕하십니까? Dentist Center 입니다." << endl;
-	while (L_number != 4)
+	while (true)
 	{
 		sm.FindCPrice(cm); //차라리 처음부터 함수를 호출하면 알아서 처리 되지 않을까
 		cout << "\n아래에 해당하는 번호를 입력하여 원하시는 정보를 활용하십시오." << endl;
